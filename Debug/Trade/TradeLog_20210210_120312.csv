@@ -1,0 +1,4 @@
+LocalTime,Type,Symbol,ClientOrderID,ExchangeOrderID,ExchangeTradeID/UserProductInfo,Price/YdPosition,OrigionVolume/Position,TradedVolume/TdPosition,Side,OpenClose,OrderType,InsertTime,CancelTime,Status,Text
+20210210_12:03:13,MSG,,,,,,,,,,,,,,Authenticate:正确
+20210210_12:03:14,MSG,,,,,,,,,,,,,,125170 Login:正确
+20210210_12:03:52,MSG,,,,,,,,,,,,,,DisConnect!!

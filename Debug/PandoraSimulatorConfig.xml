@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config Generated_at="2016-12-26 23:21:47">
+  <!-- Configs for PegasusTrader -->
+  <User type="2">
+    <SimulatorServer Front="E:\trade\HisData\HisMarketDataIndex.xml" Interval="0" Instrument="E:\trade\HisData\Instrument.xml"/>
+    <Account PreBalance="0"/>
+  </User>
+  <Subscription>
+
+    <Instrument ID="MA105"/>
+
+  </Subscription>
+    <StrategyConfigFile>
+      .\StrategyTest.xml
+    </StrategyConfigFile>
+ <Result>
+  	<TotalResult bSave="1" Interval="10" />
+  	<InsResult ID="MA105" bSave="0" Interval="1"/>
+  </Result>
+</Config>

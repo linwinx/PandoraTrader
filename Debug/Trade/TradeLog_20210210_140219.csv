@@ -1,0 +1,7 @@
+LocalTime,Type,Symbol,ClientOrderID,ExchangeOrderID,ExchangeTradeID/UserProductInfo,Price/YdPosition,OrigionVolume/Position,TradedVolume/TdPosition,Side,OpenClose,OrderType,InsertTime,CancelTime,Status,Text
+20210210_14:02:20,MSG,,,,,,,,,,,,,,Authenticate:正确
+20210210_14:02:21,MSG,,,,,,,,,,,,,,125170 Login:正确
+20210210_14:02:31,IO,MA105,1800,,,2253.000000,1,0,B,Open,Limit,N/A,N/A,N/A,CancelCount:0
+20210210_14:02:31,UO,MA105,1800,,Pandora,2253.000000,1,0,B,Open,Limit,14:02:31,,未知,报单已提交
+20210210_14:02:31,UO,MA105,1800,      263823,Pandora,2253.000000,1,0,B,Open,Limit,14:02:30,,未成交(队),未成交
+20210210_14:03:44,MSG,,,,,,,,,,,,,,DisConnect!!

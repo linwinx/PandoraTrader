@@ -22,7 +22,7 @@
     <ProjectGuid>{478B0471-4B94-48C8-8A8D-6539B9457D54}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Trader</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

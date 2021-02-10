@@ -2,7 +2,7 @@
 <Config Generated_at="2016-12-26 23:21:47">
   <!-- Configs for PegasusTrader -->
   <User type="2">
-    <SimulatorServer Front="F:\HisData\HisMarketDataIndex.xml" Interval="0" Instrument="F:\HisData\Instrument.xml"/>
+    <SimulatorServer Front="E:\trade\HisData\HisMarketDataIndex.xml" Interval="0" Instrument="E:\trade\HisData\Instrument.xml"/>
     <Account PreBalance="0"/>
   </User>
   <Subscription>
@@ -15,6 +15,6 @@
     </StrategyConfigFile>
  <Result>
   	<TotalResult bSave="1" Interval="10" />
-  	<InsResult ID="IC1907" bSave="0" Interval="1"/>
+  	<InsResult ID="MA105" bSave="0" Interval="1"/>
   </Result>
 </Config>
