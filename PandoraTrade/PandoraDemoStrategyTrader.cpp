@@ -281,7 +281,7 @@ int main()
 #ifdef WIN32
 	if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE))
 	{
-		printf("\nThe Control Handler is uninstalled.\n");
+		std::cout << "\nThe Control Handler is uninstalled.\n" << std::endl;
 		return 0;
 	}
 #endif // WIN32
@@ -304,7 +304,7 @@ int main()
 
 		return -1;
 	}
-	std::cout << "User: " << m_szTdUserID << std::endl;
+	std::cout << "用户: " << m_szTdUserID << std::endl;
 
 	if (m_strStrategyConfigFile.size() == 0)
 	{
@@ -313,6 +313,7 @@ int main()
 	else
 	{
 		m_cwStategy.InitialStrategy(m_strStrategyConfigFile.c_str());
+		std::cout << "策略配置: " << m_strStrategyConfigFile.c_str() << std::endl;
 	}
 
 	//设置mutex 防止一个程序开多个
@@ -320,6 +321,8 @@ int main()
 	strAppMutexName = m_szTdUserID;
 	strAppMutexName.append("_");
 	strAppMutexName += m_cwStategy.GetStrategyName().c_str();
+
+	std::cout << "Mutex名称: " << strAppMutexName.c_str() << std::endl;
 
 #ifdef WIN32
 	int  unicodeLen = ::MultiByteToWideChar(CP_ACP,	0, strAppMutexName.c_str(),	-1,	NULL, 0);
@@ -379,11 +382,12 @@ int main()
 			cwAccountPtr pAccount = m_TradeChannel.GetAccount();
 			if (pAccount.get() != NULL)
 			{
+				std::cout << std::fixed;
 				std::cout << m_cwStategy.m_strCurrentUpdateTime.c_str()
-					<< " Total：" << pAccount->Balance 
-					<< " Available：" << pAccount->Available
-					<< " PL："	<< pAccount->CloseProfit + pAccount->PositionProfit - pAccount->Commission 
-					<< " Fee：" << pAccount->Commission << std::endl;
+					<< " 总：" << pAccount->Balance 
+					<< " 可用：" << pAccount->Available
+					<< " 收益："	<< pAccount->CloseProfit + pAccount->PositionProfit - pAccount->Commission 
+					<< " 手续费：" << pAccount->Commission << std::endl;
 			}
 
 			/*std::map<std::string, cwPositionPtr> PosMap = m_TradeChannel.GetPosition();

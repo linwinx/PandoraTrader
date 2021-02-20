@@ -1,0 +1,14 @@
+*/ipch/
+*/*/x64/
+*/*/Release/
+*/*/Debug/
+*.raw
+*.bmp
+*.pdb
+*.exp
+*.ilk
+*.csv
+
+*.opensdf
+*.sdf
+*.suo
