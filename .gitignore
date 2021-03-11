@@ -14,3 +14,6 @@
 *.suo
 *.db
 */.suo
+*.opendb
+.vs/
+PandoraTrader.VC.db
