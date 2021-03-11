@@ -12,3 +12,5 @@
 *.opensdf
 *.sdf
 *.suo
+*.db
+*/.suo
