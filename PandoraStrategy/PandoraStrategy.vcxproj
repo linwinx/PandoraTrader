@@ -125,10 +125,12 @@
   <ItemGroup>
     <ClCompile Include="cwEmptyStrategy.cpp" />
     <ClCompile Include="cwStrategyDemo.cpp" />
+    <ClCompile Include="cwStrategyFirst.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cwEmptyStrategy.h" />
     <ClInclude Include="cwStrategyDemo.h" />
+    <ClInclude Include="cwStrategyFirst.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

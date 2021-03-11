@@ -420,6 +420,7 @@ public:
 	virtual void OnRtnChangeAccountByBank(CThostFtdcChangeAccountField *pChangeAccount);
 
 
+	//Pandora define
 public:
 	//User Setting Method
 	inline CThostFtdcTraderApi * GetUserThostFtdcMdApi()

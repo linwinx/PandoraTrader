@@ -190,6 +190,11 @@ copy "..\Interface\CTPTradeApi32\*.dll" "$(SolutionDir)$(Configuration)\";</Comm
   <ItemGroup>
     <None Include="..\README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PandoraStrategy\PandoraStrategy.vcxproj">
+      <Project>{b3b810b5-370e-4a47-acf9-3bc14481dc94}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

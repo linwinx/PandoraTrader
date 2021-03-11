@@ -21,12 +21,18 @@
     <ClCompile Include="cwStrategyDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cwStrategyFirst.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cwEmptyStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cwStrategyDemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cwStrategyFirst.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

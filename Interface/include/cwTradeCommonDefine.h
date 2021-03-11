@@ -1068,14 +1068,14 @@ typedef struct CWPOSITIONFIELD
 
 
 	cwFtdcVolumeType GetLongYdPosition();
-	cwFtdcVolumeType GetLongTotalPosition();
+	cwFtdcVolumeType GetLongTotalPosition();//获取多仓数量
 	cwFtdcVolumeType GetLongTodayPosition();
 
-	cwFtdcMoneyType  GetLongAveragePosPrice();
-	cwFtdcMoneyType  GetLongCurrentPosPrice();
+	cwFtdcMoneyType  GetLongAveragePosPrice();//获取所有多仓平均价格
+	cwFtdcMoneyType  GetLongCurrentPosPrice();//获取多仓当前价格
 
 	cwFtdcVolumeType GetShortYdPosition();
-	cwFtdcVolumeType GetShortTotalPosition();
+	cwFtdcVolumeType GetShortTotalPosition();//获取空仓数量
 	cwFtdcVolumeType GetShortTodayPosition();
 
 	cwFtdcMoneyType  GetShortAveragePosPrice();

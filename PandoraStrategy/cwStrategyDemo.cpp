@@ -28,18 +28,17 @@ void cwStrategyDemo::PriceUpdate(cwMarketDataPtr pPriceData)
 	GetPositionsAndActiveOrders(CurrentPosMap, WaitOrderList);
 
 	//找出当前合约的持仓
-	std::map<std::string, cwPositionPtr>::iterator PosIt;
+	std::map<std::string, cwPositionPtr>::iterator PosIt; //持仓map的迭代器
 	PosIt = CurrentPosMap.find(pPriceData->InstrumentID);
 	if (PosIt != CurrentPosMap.end())
 	{
-		int iPos = PosIt->second->GetLongTotalPosition();
+		int iPos = PosIt->second->GetLongTotalPosition(); //获取多仓数量
 		if (iPos > 0)
 		{
 			//有多仓
 			bool bHasWaitOrder = false;
 			//检查所有挂单
-			for (WaitOrderIt = WaitOrderList.begin();
-			WaitOrderIt != WaitOrderList.end(); WaitOrderIt++)
+			for (WaitOrderIt = WaitOrderList.begin(); WaitOrderIt != WaitOrderList.end(); WaitOrderIt++)
 			{
 				//确定这个挂单是这个合约的
 				if ((std::string)pPriceData->InstrumentID == (std::string)WaitOrderIt->second->InstrumentID)
@@ -69,7 +68,9 @@ void cwStrategyDemo::PriceUpdate(cwMarketDataPtr pPriceData)
 				EasyInputOrder(pPriceData->InstrumentID, -1 * iPos, pPriceData->BidPrice1);
 			}
 		}
-		iPos = PosIt->second->GetShortTotalPosition();
+
+
+		iPos = PosIt->second->GetShortTotalPosition();//获取空仓数量
 		if (iPos > 0)
 		{
 			//有空仓
@@ -155,8 +156,7 @@ void cwStrategyDemo::PriceUpdate(cwMarketDataPtr pPriceData)
 
 		//看看有没有挂单
 		bool bHasWaitOrder = false;
-		for (WaitOrderIt = WaitOrderList.begin();
-		WaitOrderIt != WaitOrderList.end(); WaitOrderIt++)
+		for (WaitOrderIt = WaitOrderList.begin(); WaitOrderIt != WaitOrderList.end(); WaitOrderIt++)
 		{
 			if ((std::string)pPriceData->InstrumentID == (std::string)WaitOrderIt->second->InstrumentID
 				&& (WaitOrderIt->second->Direction == CW_FTDC_D_Buy))

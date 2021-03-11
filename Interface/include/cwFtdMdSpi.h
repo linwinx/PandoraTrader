@@ -95,6 +95,7 @@ public:
 	///Ñ¯¼ÛÍ¨Öª
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp);
 	
+	//Pandora define
 	inline CThostFtdcMdApi * GetUserThostFtdcMdApi() 
 	{
 		return m_pMarketDataUserApi;

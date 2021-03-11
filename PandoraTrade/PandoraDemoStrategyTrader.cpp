@@ -13,6 +13,7 @@
 #include "cwEmptyStrategy.h"
 #else
 #include "cwStrategyDemo.h"
+#include "cwStrategyFirst.h"
 #endif
 #include "tinyxml.h"
 #include "cwBasicCout.h"
@@ -39,7 +40,8 @@ cwFtdTradeSpi			m_TradeChannel;
 #ifdef EMPTYSTRATEGY
 cwEmptyStrategy			m_cwStategy;
 #else
-cwStrategyDemo			m_cwStategy;
+//cwStrategyDemo			m_cwStategy;
+cwStrategyFirst			m_cwStategy;
 #endif
 
 cwBasicCout				m_cwShow;
@@ -356,10 +358,10 @@ int main()
 
 	std::string strStrategyName = m_cwStategy.GetStrategyName();
 
-	m_TradeChannel.RegisterBasicStrategy(dynamic_cast<cwBasicStrategy*>(&m_cwStategy));
+	m_TradeChannel.RegisterBasicStrategy(dynamic_cast<cwBasicStrategy*>(&m_cwStategy)); //交易类
 
 	m_mdCollector.RegisterTradeSPI(dynamic_cast<cwBasicTradeSpi*>(&m_TradeChannel));
-	m_mdCollector.RegisterStrategy(dynamic_cast<cwBasicStrategy*>(&m_cwStategy));
+	m_mdCollector.RegisterStrategy(dynamic_cast<cwBasicStrategy*>(&m_cwStategy)); //行情类
 
 	std::thread m_PriceServerThread = std::thread(PriceServerThread);
 
