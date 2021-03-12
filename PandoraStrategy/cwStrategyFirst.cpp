@@ -51,7 +51,7 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 			isLongOrShort = 1;
 		}
 
-		if (tickEndPrice <= tickStartPrice + QUICK_POINTS && isLongOrShort == 0)
+		if (tickEndPrice <= tickStartPrice - QUICK_POINTS && isLongOrShort == 0)
 		{
 			EasyInputOrder(pPriceData->InstrumentID, -1, pPriceData->AskPrice1);
 			isLongOrShort = -1;

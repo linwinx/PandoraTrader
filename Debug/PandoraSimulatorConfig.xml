@@ -7,7 +7,7 @@
   </User>
   <Subscription>
 
-    <Instrument ID="MA105"/>
+    <Instrument ID="AP105"/>
 
   </Subscription>
     <StrategyConfigFile>
@@ -15,6 +15,6 @@
     </StrategyConfigFile>
  <Result>
   	<TotalResult bSave="1" Interval="10" />
-  	<InsResult ID="MA105" bSave="0" Interval="1"/>
+  	<InsResult ID="AP105" bSave="0" Interval="1"/>
   </Result>
 </Config>
