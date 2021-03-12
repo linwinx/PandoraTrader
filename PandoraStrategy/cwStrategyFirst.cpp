@@ -72,9 +72,6 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 
 	}
 
-
-
-
 	////////////////////////////////////////////////////////
 	//定义map，用于保存持仓信息 
 	std::map<std::string, cwPositionPtr> CurrentPosMap;
