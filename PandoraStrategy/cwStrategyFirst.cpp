@@ -1,11 +1,12 @@
 #include "cwStrategyFirst.h"
 
-#define ACCTION_TICKS  10 //价格判断变动的ticks数
-#define QUICK_POINTS 6 //ACCTION_TICKS个tick内价格变动6个点
 
 cwStrategyFirst::cwStrategyFirst()
 {
 	tickCnt = 0;
+	isLongOrShort = 0;
+	tickPipeIndex = 0;
+	isCanStart = false;
 }
 
 
@@ -26,28 +27,53 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 		return;
 	}
 	m_strCurrentUpdateTime = pPriceData->UpdateTime;
+	tickCurPrice = pPriceData->ClosePrice;
+	FillPipePrice(tickCurPrice);
 
-	if (tickCnt == 0)
+	if (!isCanStart)
 	{
-		tickBasePrice = pPriceData->ClosePrice;
+		tickCnt += 1;
+		if (tickCnt > ACCTION_TICKS + 12)
+		{
+			isCanStart = true;
+			tickCnt = 0;
+		}
 	}
-	
-	tickCnt += 1;
-
-	if (tickCnt == ACCTION_TICKS)
+	else
 	{
-		tickCurPrice = pPriceData->ClosePrice;
+		tickStartPrice = tickPipePrice[0];
+		tickEndPrice = tickPipePrice[ACCTION_TICKS - 1];
 
-		if (tickCurPrice >= tickBasePrice + QUICK_POINTS)
+		//开仓
+		if (tickEndPrice >= tickStartPrice + QUICK_POINTS && isLongOrShort == 0)
 		{
 			EasyInputOrder(pPriceData->InstrumentID, 1, pPriceData->BidPrice1);
+			isLongOrShort = 1;
 		}
 
-		if (tickCurPrice <= tickBasePrice + QUICK_POINTS)
+		if (tickEndPrice <= tickStartPrice + QUICK_POINTS && isLongOrShort == 0)
 		{
 			EasyInputOrder(pPriceData->InstrumentID, -1, pPriceData->AskPrice1);
+			isLongOrShort = -1;
 		}
+
+        //平仓
+		if (isLongOrShort == 1 && (tickCurPrice > tickEndPrice + PROFIT_POINTS || tickCurPrice < tickEndPrice - LOSS_POINTS))
+		{
+			EasyInputOrder(pPriceData->InstrumentID, -1, pPriceData->AskPrice1);
+			isLongOrShort = 0;
+		}
+
+		if (isLongOrShort == -1 && (tickCurPrice > tickEndPrice + LOSS_POINTS || tickCurPrice < tickEndPrice - PROFIT_POINTS))
+		{
+			EasyInputOrder(pPriceData->InstrumentID, 1, pPriceData->AskPrice1);
+			isLongOrShort = 0;
+		}
+
 	}
+
+
+
 
 	////////////////////////////////////////////////////////
 	//定义map，用于保存持仓信息 
@@ -64,48 +90,11 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 	PosIt = CurrentPosMap.find(pPriceData->InstrumentID);
 	if (PosIt != CurrentPosMap.end())
 	{
-		int iPos = PosIt->second->GetLongTotalPosition(); //获取多仓数量
-		if (iPos > 0)
+		int iPosLong = PosIt->second->GetLongTotalPosition(); //获取多仓数量
+		int iPosShort = PosIt->second->GetShortTotalPosition();//获取空仓数量
+		if (iPosLong > 0 || iPosShort > 0)
 		{
-			//有多仓
-			bool bHasWaitOrder = false;
-			//检查所有挂单
-			for (WaitOrderIt = WaitOrderList.begin(); WaitOrderIt != WaitOrderList.end(); WaitOrderIt++)
-			{
-				//确定这个挂单是这个合约的
-				if ((std::string)pPriceData->InstrumentID == (std::string)WaitOrderIt->second->InstrumentID)
-				{
-					//多单撤去
-					if (WaitOrderIt->second->Direction == CW_FTDC_D_Buy)
-					{
-						CancelOrder(WaitOrderIt->second);
-					}
-					else
-					{
-						//标识有挂单
-						bHasWaitOrder = true;
-
-						//挂单价格大于最新价+2，撤单
-						if (WaitOrderIt->second->LimitPrice > pPriceData->LastPrice + 2)
-						{
-							CancelOrder(WaitOrderIt->second);
-						}
-					}
-				}
-			}
-			//没有挂单，就挂单平仓
-			if (!bHasWaitOrder)
-			{
-				//挂委托限价单，
-				EasyInputOrder(pPriceData->InstrumentID, -1 * iPos, pPriceData->BidPrice1);
-			}
-		}
-
-
-		iPos = PosIt->second->GetShortTotalPosition();//获取空仓数量
-		if (iPos > 0)
-		{
-			//有空仓
+			//有仓
 			std::map<std::string, cwOrderPtr>::iterator WaitOrderIt;
 			//定义map，用于保存挂单信息 
 			std::map<std::string, cwOrderPtr> WaitOrderList;
@@ -118,31 +107,18 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 			{
 				if ((std::string)pPriceData->InstrumentID == (std::string)WaitOrderIt->second->InstrumentID)
 				{
-					if (WaitOrderIt->second->Direction == CW_FTDC_D_Sell)
+					//标识有挂单
+					bHasWaitOrder = true;
+
+					//挂单价格大于最新价+2，撤单
+					if (fabs(WaitOrderIt->second->LimitPrice - pPriceData->LastPrice) > 4.0)
 					{
 						CancelOrder(WaitOrderIt->second);
 					}
-					else
-					{
-						//有挂单
-						bHasWaitOrder = true;
-
-						//挂单价格小于最新价-2，撤单
-						if (WaitOrderIt->second->LimitPrice < pPriceData->LastPrice - 2)
-						{
-							CancelOrder(WaitOrderIt->second);
-						}
-					}
 				}
 			}
-
-			//没有挂单，就挂单平仓
-			if (!bHasWaitOrder)
-			{
-				EasyInputOrder(pPriceData->InstrumentID, iPos, pPriceData->AskPrice1);
-			}
 		}
-		if (PosIt->second->GetLongTotalPosition() + PosIt->second->GetShortTotalPosition() == 0)
+		else if (PosIt->second->GetLongTotalPosition() + PosIt->second->GetShortTotalPosition() == 0)
 		{
 
 			std::map<std::string, cwOrderPtr>::iterator WaitOrderIt;
@@ -162,17 +138,11 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 					bHasWaitOrder = true;
 
 					//挂单价格小于最新价-2，撤单
-					if (WaitOrderIt->second->LimitPrice < pPriceData->LastPrice - 2)
+					if (fabs(WaitOrderIt->second->LimitPrice - pPriceData->LastPrice) > 4.0)
 					{
 						CancelOrder(WaitOrderIt->second);
 					}
 				}
-			}
-
-			//没有挂单就报委托单，方向多，价格买一价
-			if (!bHasWaitOrder)
-			{
-				EasyInputOrder(pPriceData->InstrumentID, 1, pPriceData->BidPrice1);
 			}
 		}
 	}
@@ -190,23 +160,16 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 		bool bHasWaitOrder = false;
 		for (WaitOrderIt = WaitOrderList.begin(); WaitOrderIt != WaitOrderList.end(); WaitOrderIt++)
 		{
-			if ((std::string)pPriceData->InstrumentID == (std::string)WaitOrderIt->second->InstrumentID
-				&& (WaitOrderIt->second->Direction == CW_FTDC_D_Buy))
+			if ((std::string)pPriceData->InstrumentID == (std::string)WaitOrderIt->second->InstrumentID)
 			{
 				bHasWaitOrder = true;
 
 				//挂单价格小于最新价-2，撤单
-				if (WaitOrderIt->second->LimitPrice < pPriceData->LastPrice - 2)
+				if (fabs(WaitOrderIt->second->LimitPrice - pPriceData->LastPrice) > 4.0)
 				{
 					CancelOrder(WaitOrderIt->second);
 				}
 			}
-		}
-
-		//没有挂单就报委托单，方向多，价格买一价
-		if (!bHasWaitOrder)
-		{
-			EasyInputOrder(pPriceData->InstrumentID, 1, pPriceData->BidPrice1);
 		}
 	}
 
@@ -224,4 +187,14 @@ void cwStrategyFirst::OnRtnOrder(cwOrderPtr pOrder, cwOrderPtr pOriginOrder)
 
 void cwStrategyFirst::OnOrderCanceled(cwOrderPtr pOrder)
 {
+}
+
+
+void cwStrategyFirst::FillPipePrice(int price)
+{
+	tickPipePrice[tickPipeIndex++] = price;
+	if (tickPipeIndex == ACCTION_TICKS)
+	{
+		tickPipeIndex = 0;
+	}
 }
