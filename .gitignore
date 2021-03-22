@@ -1,19 +1,65 @@
-*/ipch/
-*/*/x64/
-*/*/Release/
-*/*/Debug/
-*.raw
-*.bmp
+# Compiled source #
+###################
+*.com
+*.class
+*.exe
+*.o
+*.so
+*.obj
 *.pdb
-*.exp
+*.idb
 *.ilk
-*.csv
+*.lastbuildstate
 
+*.ipch
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.tlog
+
+# VS generated files #
+######################
 *.opensdf
-*.sdf
 *.suo
-*.db
-*/.suo
+*.sdf
+*.pch
+
+# VS cache
+######################
+*.VC.db
+*.VC.VC.opendb
 *.opendb
+*.sdf
+
+# Build/output folders #
+########################
+x64/*
+x64/.*
+x86/*
+x86/.*
+[Dd]ebug/
+[Rr]elease/
+[Rr]eleases/
+
+*/[Dd]ebug/
+*/[Rr]elease/
+*/[Rr]eleases/
+*/x64/
+*/x86/
+*.lib
+*.dll
+
+*.vcxproj.user
 .vs/
-PandoraTrader.VC.db
+
+# Dothinkey files
+DTP_X86_bin/
+DTP_X64_bin/
+
+
+Lib/boost_1_73_0
+Lib/opencv2.4.13
+*.7z

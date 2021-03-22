@@ -31,11 +31,16 @@ public:
 
 	std::string m_strCurrentUpdateTime;
 	int tickCnt;
+	std::string tickPipePriceTime[ACCTION_TICKS];
 	int tickPipePrice[ACCTION_TICKS];
 	int tickPipeIndex;
-	void FillPipePrice(int price);
+	bool FillPipePrice(int price, std::string upTime);
+
 	int tickStartPrice;
+	std::string tickStartPriceTime;
 	int tickEndPrice;
+	std::string tickEndPriceTime;
+
 	int tickCurPrice;
 
 	bool isCanStart;

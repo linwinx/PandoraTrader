@@ -27,8 +27,11 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 		return;
 	}
 	m_strCurrentUpdateTime = pPriceData->UpdateTime;
-	tickCurPrice = pPriceData->ClosePrice;
-	FillPipePrice(tickCurPrice);
+	tickCurPrice = pPriceData->BidPrice1;
+	if (!FillPipePrice(tickCurPrice, m_strCurrentUpdateTime))
+	{
+		return;
+	}
 
 	if (!isCanStart)
 	{
@@ -42,7 +45,10 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 	else
 	{
 		tickStartPrice = tickPipePrice[0];
-		tickEndPrice = tickPipePrice[ACCTION_TICKS - 1];
+		tickStartPriceTime = tickPipePriceTime[0];
+		tickEndPrice = tickPipePrice[ACCTION_TICKS - 2];
+		tickEndPriceTime = tickPipePriceTime[ACCTION_TICKS - 2];
+
 
 		//开仓
 		if (tickEndPrice >= tickStartPrice + QUICK_POINTS && isLongOrShort == 0)
@@ -72,6 +78,7 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 
 	}
 
+#if 0
 	////////////////////////////////////////////////////////
 	//定义map，用于保存持仓信息 
 	std::map<std::string, cwPositionPtr> CurrentPosMap;
@@ -170,7 +177,7 @@ void cwStrategyFirst::PriceUpdate(cwMarketDataPtr pPriceData)
 		}
 	}
 
-
+#endif
 
 }
 
@@ -187,11 +194,19 @@ void cwStrategyFirst::OnOrderCanceled(cwOrderPtr pOrder)
 }
 
 
-void cwStrategyFirst::FillPipePrice(int price)
+bool cwStrategyFirst::FillPipePrice(int price, std::string upTime)
 {
-	tickPipePrice[tickPipeIndex++] = price;
+	if (price == 0 || upTime.length() == 0)
+	{
+		return false;
+	}
+	tickPipePrice[tickPipeIndex] = price;
+	tickPipePriceTime[tickPipeIndex] = upTime;
+	tickPipeIndex += 1;
 	if (tickPipeIndex == ACCTION_TICKS)
 	{
 		tickPipeIndex = 0;
 	}
+	
+	return true;
 }

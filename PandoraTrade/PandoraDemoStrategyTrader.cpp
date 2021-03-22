@@ -372,8 +372,18 @@ int main()
 	while (1)
 	{
 		iCnt++;
+		if (iCnt % 2 == 0)
+		{
+			//std::string InstrumentId = m_SubscribeInstrument.front();
+			    std::cout << "cur[ " << m_cwStategy.m_strCurrentUpdateTime.c_str() << "=" << m_cwStategy.tickCurPrice << " Buy or sell:" << m_cwStategy.isLongOrShort << std::endl;
+				std::cout << "start[ " <<  m_cwStategy.tickStartPriceTime.c_str() << "=" << m_cwStategy.tickStartPrice  << std::endl;
+				std::cout << "end [ " << m_cwStategy.tickEndPriceTime.c_str() << "=" << m_cwStategy.tickEndPrice << std::endl;
+				std::cout << "------------------------------" << std::endl;
+		}
+
 		if (iCnt % 20 == 0)
 		{
+			
 			if (iCnt % 80 == 0)
 			{
 				std::cout << m_szTdUserID << " " 
@@ -411,7 +421,7 @@ int main()
 				}
 			}*/
 		}
-		cwSleep(1000);
+		cwSleep(200);
 	}
     return 0;
 }
